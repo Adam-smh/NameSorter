@@ -1,0 +1,6 @@
+NameSorterApp/bin/
+NameSorterApp/obj/
+NameSorterApp.UnitTests/bin/
+NameSorterApp.UnitTests/obj/
+NameSorterApp/.vs/
+**/packages/*
