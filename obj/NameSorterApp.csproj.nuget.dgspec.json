@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\afric\\proj\\NameSorterApp\\NameSorterApp.csproj": {}
+    "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\NameSorterApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\afric\\proj\\NameSorterApp\\NameSorterApp.csproj": {
+    "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\NameSorterApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\afric\\proj\\NameSorterApp\\NameSorterApp.csproj",
+        "projectUniqueName": "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\NameSorterApp.csproj",
         "projectName": "NameSorterApp",
-        "projectPath": "C:\\Users\\afric\\proj\\NameSorterApp\\NameSorterApp.csproj",
+        "projectPath": "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\NameSorterApp.csproj",
         "packagesPath": "C:\\Users\\afric\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\afric\\proj\\NameSorterApp\\obj\\",
+        "outputPath": "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\afric\\AppData\\Roaming\\NuGet\\NuGet.Config",

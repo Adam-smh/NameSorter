@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fY3+Yw9UGp7eDzGVwFZEZ0OCrSMdFsteL9rObPvJdGn9zNRXm8HJwS1kjsS7rWHJTmhQfrIp3aZVerzZbENkbw==",
+  "dgSpecHash": "0jujY8w89+M8fe6B//hPWB6tftezf+GJBu6lihIJb4oyiDqArdKCQfXydUSMTqjcR11lTgn5Eke0nHxxA/eeZA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\afric\\proj\\NameSorterApp\\NameSorterApp.csproj",
+  "projectFilePath": "C:\\Users\\afric\\proj\\NSApp\\NameSorterApp\\NameSorterApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\afric\\.nuget\\packages\\microsoft.codecoverage\\17.2.0\\microsoft.codecoverage.17.2.0.nupkg.sha512",
     "C:\\Users\\afric\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
