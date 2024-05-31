@@ -68,6 +68,11 @@ namespace NameSorterApp
                 }
             }
 
+            foreach (var name in sortedNames) {
+
+                Console.WriteLine(name);
+
+            }
 
             // Write sorted names to output file
             File.WriteAllLines(outputFilePath, sortedNames);
