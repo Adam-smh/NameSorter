@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NameSorter.NameSorterApp
 {
-    class Name
+    public class Name
     {
         public string FirstName { get; }
         public string MidName1 { get; }
