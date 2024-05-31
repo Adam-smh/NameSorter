@@ -17,7 +17,12 @@ namespace NameSorterApp
                 //if file exists, add all names to a list
                 return File.ReadAllLines(filePath).ToList();
             }
-            return null;
+            else
+            {
+                //file does not exist, end
+                Console.WriteLine("file does not exist");
+                return null;
+            }
         }
 
         //fun uses list of names to create new list sorting names in order of last name, first name then middle names
@@ -66,21 +71,29 @@ namespace NameSorterApp
 
 
              if (names != null) {
-                 //using new list, a new list is made sorting names in order of last name, first name then middle names
-                 sortedNames = SortNames(names);
 
-                 //printing name in order in console
-                 foreach (var name in sortedNames)
-                 {
-                     Console.WriteLine(name);
-                 }
-             }
-             else
-             {
-                 //if list of names is null, ask user for valid list of names
-                 Console.WriteLine("list does not exist");
-                 return;
-             }
+                if (names.Count != 0)
+                {
+                    //using new list, a new list is made sorting names in order of last name, first name then middle names
+                    sortedNames = SortNames(names);
+
+                    //printing name in order in console
+                    foreach (var name in sortedNames)
+                    {
+                        Console.WriteLine(name);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("empty list cannot be processed");
+                    return;
+                }
+
+            }
+            else
+            {
+                return;
+            }
 
              //ensuring that the output file has a valid name that the user provides
              while (string.IsNullOrEmpty(outputFilePath))
