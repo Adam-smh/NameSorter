@@ -16,3 +16,8 @@ install:
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --version'
   - cmd: choco install dotnet-sdk --version 7.0.100 -y
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --list-sdks'
+
+before_build:
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore NameSorter/NameSorterApp/NameSorterApp.csproj'
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore NameSorter/NameSorterApp.UnitTests/NameSorterApp.UnitTests.csproj'
+
