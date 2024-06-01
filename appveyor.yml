@@ -18,6 +18,6 @@ install:
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --list-sdks'
 
 before_build:
-  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore NameSorter/NameSorterApp/NameSorterApp.csproj'
-  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore NameSorter/NameSorterApp.UnitTests/NameSorterApp.UnitTests.csproj'
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
 
