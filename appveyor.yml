@@ -21,3 +21,9 @@ before_build:
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
 
+build:
+  project: C:\projects\namesorter\NameSorterApp\NameSorterApp.sln
+
+test: 
+  assemblies:
+    - 'C:\projects\namesorter\NameSorterApp.UnitTests\bin\**\NameSorterApp.UnitTests.dll'
