@@ -1,5 +1,5 @@
-﻿using NameSorter;
-using NameSorter.NameSorterApp;
+﻿using NameSorterApp;
+using NameSorterApp.Interfaces;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
 
@@ -8,119 +8,67 @@ namespace NameSorterApp
     public class SortingNameP
     {
 
-        //fun used to check if file exists and if true returns list of names
-        public static List<string>? readFile(string filePath)
+        private readonly IFileReader? _fileReader;
+        private readonly INameSorter? _nameSorter;
+        private readonly IFileWriter? _fileWriter;
+
+        public SortingNameP(IFileReader? fileReader, INameSorter? nameSorter, IFileWriter? fileWriter)
         {
-            //Checking if file exists
-            if (File.Exists(filePath))
+            _fileReader = fileReader;
+            _nameSorter = nameSorter;
+            _fileWriter = fileWriter;
+        }
+
+        public List<string>? Run(string inputFilePath, string? outputFilePath = null)
+        {
+            if (string.IsNullOrWhiteSpace(inputFilePath) || !Path.GetExtension(inputFilePath).Equals(".txt", StringComparison.OrdinalIgnoreCase))
             {
-                //if file exists, add all names to a list
-                return File.ReadAllLines(filePath).ToList();
-            }
-            else
-            {
-                //file does not exist, end
-                Console.WriteLine("file does not exist");
+                Console.WriteLine("Invalid file. Please provide a valid .txt file.");
                 return null;
             }
-        }
 
-        //fun uses list of names to create new list sorting names in order of last name, first name then middle names
-        public static List<string> SortNames(List<string> names)
-        {
-            return names
-                .Select(name => new Name(name))
-                .OrderBy(n => n.LastName)
-                .ThenBy(n => n.FirstName)
-                .ThenBy(n => n.MidName1)
-                .ThenBy(n => n.MidName2)
-                .Select(n => n.FullName)
-                .ToList();
-        }
+            var names = _fileReader?.ReadFile(inputFilePath);
 
-         public static void Main(string[] args)
-         {
-             //ensuring file is provided
-             if (args.Length == 0)
-             {
-                 Console.WriteLine("Please provide the input file path as a command-line argument.");
-                 return;
-             }
-             //file of unsorted names that must be sorted
-             string inputFilePath = args[0];
-             //file of sorted names produced
-             string? outputFilePath = "";
-
-             List<string>? names;
-             List<string>? sortedNames;
-
-             //Checking file extension
-             string fileExt = Path.GetExtension(inputFilePath);
-             if (fileExt == ".txt")
-             {
-                 // Push all names from file into list of names
-                 names = readFile(inputFilePath);
-
-            }
-            else
+            if (names == null || names.Count == 0)
             {
-                //if file ext is not .txt, display msg
-                Console.WriteLine("file is invalid, please only insert .txt files");
-                return;
+                //file does not exist, end
+                Console.WriteLine("File does not exist.");
+                return null;
             }
 
+            var sortedNames = _nameSorter?.SortNames(names);
 
-             if (names != null) {
+            if(sortedNames != null)
+            {
 
-                if (names.Count != 0)
+                foreach (var name in sortedNames)
                 {
-                    //using new list, a new list is made sorting names in order of last name, first name then middle names
-                    sortedNames = SortNames(names);
+                    Console.WriteLine(name);
+                }
 
-                    //printing name in order in console
-                    foreach (var name in sortedNames)
+                while (string.IsNullOrWhiteSpace(outputFilePath))
+                {
+                    Console.WriteLine("Please enter a name for the sorted names file:");
+                    outputFilePath = Console.ReadLine()?.Trim();
+
+                    if (string.IsNullOrWhiteSpace(outputFilePath))
                     {
-                        Console.WriteLine(name);
+                        Console.WriteLine("Invalid file name. Please try again.");
+                        outputFilePath = null;
+                    }
+                    else if (!outputFilePath.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        outputFilePath += ".txt";
                     }
                 }
-                else
-                {
-                    Console.WriteLine("empty list cannot be processed");
-                    return;
-                }
 
+                _fileWriter?.WriteFile(outputFilePath, sortedNames);
             }
             else
             {
-                return;
+                return names;
             }
-
-             //ensuring that the output file has a valid name that the user provides
-             while (string.IsNullOrEmpty(outputFilePath))
-             {
-                 //User provides file name
-                 Console.WriteLine("Please enter a name for the list of sorted names file");
-                 outputFilePath = Console.ReadLine()?.Trim();
-
-                 //ensuring name is not null without spaces
-                 if (string.IsNullOrWhiteSpace(outputFilePath))
-                 {
-                     Console.WriteLine("Please enter valid file name");
-                     outputFilePath = null;
-                 }
-                 else
-                 {
-                     //ensuring the file type is specified as .txt
-                     if (!outputFilePath.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
-                     {
-                         outputFilePath += ".txt";
-                     }
-                 }
-             }
-
-             // Write sorted names to output file
-             File.WriteAllLines(outputFilePath, sortedNames);
-             Console.WriteLine($"Sorted names have been written to {outputFilePath}");
-         }
+            return sortedNames;
+        }
     }
 }
