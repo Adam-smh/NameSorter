@@ -15,10 +15,9 @@ cache:
 install:
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --version'
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore'
-  - cmd: choco install dotnetcore-sdk --version 3.1.301 -y
-  - dir
-  - echo %APPVEYOR_BUILD_FOLDER%
-  - type NameSorter/NameSorterApp/NameSorterApp.csproj
+  - cmd: dir
+  - cmd: echo %APPVEYOR_BUILD_FOLDER%
+  - cmd: type NameSorter/NameSorterApp/NameSorterApp.csproj
 
 build:
   project: NameSorter/NameSorterApp/NameSorterApp.csproj
