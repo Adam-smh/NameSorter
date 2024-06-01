@@ -10,65 +10,56 @@ namespace NameSorterApp.UnitTests
     public class GeneralTests
     {
         [Fact]
-        public void Sorting_FileNotFound_DisplayErrorMessage()
+        public void ReadFile_FileNotFound_ReturnsEmptyList()
         {
             // Arrange
-            var mockFileReader = new Mock<IFileReader>();
-            mockFileReader.Setup(fr => fr.ReadFile(It.IsAny<string>())).Returns(new List<string>());
-            var sortingNameP = new SortingNameP(mockFileReader.Object, null, null);
-
-            var originalOut = Console.Out;
-            var writer = new StringWriter();
-            Console.SetOut(writer);
+            var fileReader = new FileReader();
+            var filePath = "nonExistentFile.txt";
 
             // Act
-            sortingNameP.Run("nonexistentfile.txt");
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Contains("File does not exist.", writer.ToString());
-
-            // Reset console output
-            Console.SetOut(originalOut);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
         [Fact]
-        public void Sorting_InvalidFileExt_DisplayErrorMessage()
+        public void ReadFile_InvalidFileExtension_ReturnsNull()
         {
             // Arrange
-            var mockFileReader = new Mock<IFileReader>();
-            var sortingNameP = new SortingNameP(mockFileReader.Object, null, null);
-
-            var originalOut = Console.Out;
-            var writer = new StringWriter();
-            Console.SetOut(writer);
+            var fileReader = new FileReader();
+            var filePath = "fileName.md";
 
             // Act
-            sortingNameP.Run("fileName.md");
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Contains("Invalid file. Please provide a valid .txt file.", writer.ToString());
-
-            // Reset console output
-            Console.SetOut(originalOut);
-
-
+            Assert.Null(result);
         }
 
         [Fact]
-        public void ReadNamesFromFile_FileExists_ReturnsNamesList()
+        public void ReadFile_FileExists_ReturnsNamesList()
         {
             // Arrange
-            var mockFileReader = new Mock<IFileReader>();
-            var expectedNames = new List<string> { "John Doe", "Jane Smith", "Alex Johnson" };
-            mockFileReader.Setup(fr => fr.ReadFile(It.IsAny<string>())).Returns(expectedNames);
-
-            var sortingNameP = new SortingNameP(mockFileReader.Object, null, null);
+            // Arrange
+            var fileReader = new FileReader();
+            var filePath = "testFile.txt";
+            var expectedContent = new List<string> { "John Doe", "Jane Smith", "Alex Johnson" };
+            File.WriteAllLines(filePath, expectedContent);
 
             // Act
-            var result = sortingNameP.Run("testFile.txt");
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Equal(expectedNames, result);
+            Assert.NotNull(result);
+            Assert.Equal(expectedContent, result);
+
+            // Cleanup
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
 
         [Fact]
@@ -77,11 +68,13 @@ namespace NameSorterApp.UnitTests
             // Arrange
             var inputFilePath = "testFile.txt";
             var outputFilePath = "testedFile.txt";
+
             var mockNameSorter = new Mock<INameSorter>();
             var mockFileReader = new Mock<IFileReader>();
+
             var unsortedNames = new List<string> { "John Doe", "Jane Smith", "Alex Johnson" };
             var expectedSortedNames = new List<string> { "John Doe", "Alex Johnson", "Jane Smith" };
-            mockFileReader.Setup(fr => fr.ReadFile(inputFilePath)).Returns(expectedSortedNames);
+            mockFileReader.Setup(fr => fr.ReadFile(inputFilePath)).Returns(unsortedNames);
             mockNameSorter.Setup(ns => ns.SortNames(unsortedNames)).Returns(expectedSortedNames);
 
             var sortingNameP = new SortingNameP(mockFileReader.Object, new NameSorter(), null);
@@ -91,6 +84,29 @@ namespace NameSorterApp.UnitTests
 
             // Assert
             Assert.Equal(expectedSortedNames, result);
+        }
+
+        [Fact]
+        public void WriteFile_ValidPathAndContent_FileIsWritten()
+        {
+            // Arrange
+            var fileWriter = new FileWriter();
+            var filePath = "testedFile.txt";
+            var content = new List<string> { "Alex Johnson", "John Doe", "Jane Smith" };
+
+            // Act
+            fileWriter.WriteFile(filePath, content);
+
+            // Assert
+            Assert.True(File.Exists(filePath));
+            var writtenContent = File.ReadAllLines(filePath);
+            Assert.Equal(content, writtenContent);
+
+            // Cleanup
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
     }
 }

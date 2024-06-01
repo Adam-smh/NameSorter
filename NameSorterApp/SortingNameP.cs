@@ -21,11 +21,6 @@ namespace NameSorterApp
 
         public List<string>? Run(string inputFilePath, string? outputFilePath = null)
         {
-            if (string.IsNullOrWhiteSpace(inputFilePath) || !Path.GetExtension(inputFilePath).Equals(".txt", StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("Invalid file. Please provide a valid .txt file.");
-                return null;
-            }
 
             var names = _fileReader?.ReadFile(inputFilePath);
 

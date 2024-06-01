@@ -12,6 +12,12 @@ namespace NameSorterApp.Implementations
         //fun used to check if file exists and if true returns list of names
         public List<string>? ReadFile(string filePath)
         {
+            //if file extention is invalid return null
+            if (string.IsNullOrWhiteSpace(filePath) || !Path.GetExtension(filePath).Equals(".txt", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Invalid file. Please provide a valid .txt file.");
+                return null;
+            }
             //Checking if file exists
             if (File.Exists(filePath))
             {
@@ -20,7 +26,7 @@ namespace NameSorterApp.Implementations
             }
             else
             {
-                return null;
+                return new List<string>();
             }
         }
     }
