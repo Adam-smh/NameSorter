@@ -26,4 +26,4 @@ build:
 
 test: 
   assemblies:
-    - 'C:\projects\namesorter\NameSorterApp.UnitTests\bin\**\NameSorterApp.UnitTests.dll'
+    - 'NameSorter/NameSorterApp.UnitTests/bin/Debug/net7.0/NameSorterApp.UnitTests.dll'
