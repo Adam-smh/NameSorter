@@ -22,9 +22,9 @@ middle names and first name and writes the sorted list to a new file.
     ```
 
 ### Running the Application
-3. Run the application with the input file path as an argument:
+3. Navigate to the NameSorterApp folder. Run the application with the input file path as an argument:
     ```sh
-    dotnet run --project NameSorterApp.csproj <YourFile.txt>
+    dotnet run --project NameSorterApp.csproj <YourFilePath.txt>
     ```
     (Ensure that your file is a .txt file and includes a list of names)
 
