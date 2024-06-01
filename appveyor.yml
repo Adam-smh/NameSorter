@@ -1,0 +1,29 @@
+version: 1.0.{build}
+
+image: Visual Studio 2022
+
+environment:
+  matrix:
+    - dotnet_version: 7.0.x
+
+init:
+  - ps: Install-Product node 12 x64
+
+cache:
+  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
+
+install:
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --version'
+  - cmd: choco install dotnet-sdk --version 7.0.100 -y
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" --list-sdks'
+
+before_build:
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
+  - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore C:\projects\namesorter\NameSorterApp\NameSorterApp.sln'
+
+build:
+  project: C:\projects\namesorter\NameSorterApp\NameSorterApp.sln
+
+test: 
+  assemblies:
+    - 'NameSorter/NameSorterApp.UnitTests/bin/Debug/net7.0/NameSorterApp.UnitTests.dll'
