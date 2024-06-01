@@ -17,6 +17,11 @@ install:
   - cmd: '"%ProgramFiles%\dotnet\dotnet.exe" restore'
   - cmd: choco install dotnetcore-sdk --version 3.1.301 -y
 
+install:
+  - dir
+  - echo %APPVEYOR_BUILD_FOLDER%
+  - type NameSorter/NameSorterApp/NameSorterApp.csproj
+
 build:
   project: NameSorter/NameSorterApp/NameSorterApp.csproj
 
