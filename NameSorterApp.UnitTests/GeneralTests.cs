@@ -1,77 +1,112 @@
 using Xunit;
 using System;
+using NameSorterApp.Interfaces;
+using Moq;
+using System.IO;
+using NameSorterApp.Implementations;
 
 namespace NameSorterApp.UnitTests
 {
     public class GeneralTests
     {
         [Fact]
-        public void Sorting_FileNotFound_DisplayErrorMessage()
+        public void ReadFile_FileNotFound_ReturnsEmptyList()
         {
             // Arrange
-            var originalOut = Console.Out;
-            var writer = new StringWriter();
-            Console.SetOut(writer);
+            var fileReader = new FileReader();
+            var filePath = "nonExistentFile.txt";
 
             // Act
-            SortingNameP.readFile("nonexistentfile.txt");
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Contains("file does not exist", writer.ToString());
-
-            // Reset console output
-            Console.SetOut(originalOut);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
         [Fact]
-        public void Sorting_InvalidFileExt_DisplayErrorMessage()
+        public void ReadFile_InvalidFileExtension_ReturnsNull()
         {
             // Arrange
-            var originalOut = Console.Out;
-            var writer = new StringWriter();
-            Console.SetOut(writer);
+            var fileReader = new FileReader();
+            var filePath = "fileName.md";
 
             // Act
-            SortingNameP.Main(new[] { "fileName.md" });
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Contains("file is invalid, please only insert .txt files", writer.ToString());
-
-            // Reset console output
-            Console.SetOut(originalOut);
+            Assert.Null(result);
         }
 
         [Fact]
-        public void ReadNamesFromFile_FileExists_ReturnsNamesList()
+        public void ReadFile_FileExists_ReturnsNamesList()
         {
             // Arrange
-            var filePath = "testfile.txt";
-            var expectedNames = new List<string> { "John Doe", "Jane Smith" };
-            File.WriteAllLines(filePath, expectedNames);
+            // Arrange
+            var fileReader = new FileReader();
+            var filePath = "testFile.txt";
+            var expectedContent = new List<string> { "John Doe", "Jane Smith", "Alex Johnson" };
+            File.WriteAllLines(filePath, expectedContent);
 
             // Act
-            var result = SortingNameP.readFile(filePath);
+            var result = fileReader.ReadFile(filePath);
 
             // Assert
-            Assert.Equal(expectedNames, result);
+            Assert.NotNull(result);
+            Assert.Equal(expectedContent, result);
 
             // Cleanup
-            File.Delete(filePath);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
 
         [Fact]
         public void SortNames_UnsortedList_ReturnsSortedList()
         {
             // Arrange
+            var inputFilePath = "testFile.txt";
+            var outputFilePath = "testedFile.txt";
+
+            var mockNameSorter = new Mock<INameSorter>();
+            var mockFileReader = new Mock<IFileReader>();
+
             var unsortedNames = new List<string> { "John Doe", "Jane Smith", "Alex Johnson" };
             var expectedSortedNames = new List<string> { "John Doe", "Alex Johnson", "Jane Smith" };
+            mockFileReader.Setup(fr => fr.ReadFile(inputFilePath)).Returns(unsortedNames);
+            mockNameSorter.Setup(ns => ns.SortNames(unsortedNames)).Returns(expectedSortedNames);
+
+            var sortingNameP = new SortingNameP(mockFileReader.Object, new NameSorter(), null);
 
             // Act
-            var res = SortingNameP.SortNames(unsortedNames);
+            var result = sortingNameP.Run(inputFilePath, outputFilePath);
 
             // Assert
-            Assert.Equal(expectedSortedNames, res);
+            Assert.Equal(expectedSortedNames, result);
         }
 
+        [Fact]
+        public void WriteFile_ValidPathAndContent_FileIsWritten()
+        {
+            // Arrange
+            var fileWriter = new FileWriter();
+            var filePath = "testedFile.txt";
+            var content = new List<string> { "Alex Johnson", "John Doe", "Jane Smith" };
+
+            // Act
+            fileWriter.WriteFile(filePath, content);
+
+            // Assert
+            Assert.True(File.Exists(filePath));
+            var writtenContent = File.ReadAllLines(filePath);
+            Assert.Equal(content, writtenContent);
+
+            // Cleanup
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
     }
 }
