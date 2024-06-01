@@ -42,7 +42,8 @@ dotnet test
 ```
 Tests include:
 
-- Sorting_FileNotFound_DisplayErrorMessage() - Testing response to nonexisting file
-- Sorting_InvalidFileExt_DisplayErrorMessage() - Testing response to incorrect file extention being used
-- ReadNamesFromFile_FileExists_ReturnsNamesList() - Testing reading names from file and pushing to a list
+- ReadFile_FileNotFound_ReturnsEmptyList() - Testing response to nonexisting file
+- ReadFile_InvalidFileExtension_ReturnsNull() - Testing response to incorrect file extention being used
+- ReadFile_FileExists_ReturnsNamesList() - Testing reading names from file and pushing to a list
 - SortNames_UnsortedList_ReturnsSortedList() - Testing name sorting function
+- WriteFile_ValidPathAndContent_FileIsWritten - Testing file writing function
