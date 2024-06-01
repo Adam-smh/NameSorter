@@ -18,7 +18,7 @@ install:
   - cmd: choco install dotnetcore-sdk --version 3.1.301 -y
 
 build:
-  project: NameSorter/NameSorterApp/NameSorterApp.sln
+  project: namesorter/NameSorterApp/NameSorterApp.sln
 
 test: 
   assemblies:
